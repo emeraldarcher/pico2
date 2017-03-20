@@ -21,6 +21,19 @@ A first ruleset for the Quickstart
     
     clear_name = { "_0": { "name": { "first": "GlaDOS", "last": ""} } }
 
+    name = function(id){
+      all_users = users();
+      nameObj = id => all_users{[id,"name"]}
+                  | { "first": "HAL", "last": "9000" };
+      first = nameObj{"first"};
+      last = nameObj{"last"};
+      first + " " + last
+    }
+ 
+    users = function(){
+      ent:name
+    }
+
     hello = function(obj) {
       msg = "Hello " + obj;
       msg
@@ -38,9 +51,7 @@ A first ruleset for the Quickstart
     select when echo hello
     pre {
       id = event:attr("id").defaultsTo("_0")
-      first = ent:name{[id,"name","first"]}
-      last = ent:name{[id,"name","last"]}
-      name = first + " " + last
+      name = name(id)
     }  
     send_directive("say") with
       something = "Hello " + name
