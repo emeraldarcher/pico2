@@ -29,7 +29,7 @@ Part 1 of lab
       attrs = event:attrs().klog("Attributes: ")
       mileage = event:attr("mileage").klog("Passed in mileage: ")
     }
-    if mileage <= long_trip
+    if mileage > long_trip
     then
       noop()
     fired {
