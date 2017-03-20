@@ -1,6 +1,6 @@
-ruleset part_1 {
+ruleset echo_service {
   meta {
-    name "Part 1"
+    name "Part 1 - Echo Service"
     description <<
 Part 1 of lab
 >>
