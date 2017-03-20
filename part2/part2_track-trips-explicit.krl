@@ -16,10 +16,12 @@ Part 1 of lab
     select when car new_trip
     pre { 
       attrs = event:attrs().klog("Attributes: ")
+      timestamp = time:now()
+      mileage = event:attrs("mileage")
     }
     fired {
       raise explicit event "trip_processed"
-        attributes attrs
+        attributes { "timestamp": timestamp, "mileage": mileage }
     } 
   }
   
