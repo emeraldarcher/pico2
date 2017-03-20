@@ -10,14 +10,15 @@ A first ruleset for the Quickstart
   }
   
   global {
-    hello = function(obj) {
-      msg = "Hello " + obj;
-      msg
-    }
     __testing = { "queries": [ { "name": "hello", "args": [ "obj" ] },
                            { "name": "__testing" } ],
               "events": [ { "domain": "echo", "type": "hello",
                             "attrs": [ "name" ] } ]
+            }
+
+    hello = function(obj) {
+      msg = "Hello " + obj;
+      msg
     } 
   }
   
