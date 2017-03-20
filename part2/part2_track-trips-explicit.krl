@@ -41,7 +41,7 @@ Part 1 of lab
   rule found_long_trip {
     select when explicit found_long_trip
     pre {
-      mileage = event.attrs("mileage").klog("Received mileage: ")
+      mileage = event:attrs("mileage").klog("Received mileage: ")
     }
     send_directive("trip") with
       long_trip = 1
