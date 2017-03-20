@@ -15,8 +15,11 @@ A first ruleset for the Quickstart
               "events": [ { "domain": "echo", "type": "hello",
                             "attrs": [ "name" ] },
                           { "domain": "hello", "type": "name",
-                            "attrs": [ "name" ] } ]
+                            "attrs": [ "name" ] },
+                          { "domain": "hello", "type": "clear" } ]
             }
+    
+    clear_name = { "_0": { "name": { "first": "GlaDOS", "last": ""} } }
 
     hello = function(obj) {
       msg = "Hello " + obj;
@@ -24,6 +27,13 @@ A first ruleset for the Quickstart
     } 
   }
   
+  rule clear_names {
+    select when hello clear
+    always {
+      ent:name := clear_name
+    }
+  }
+
   rule hello_world {
     select when echo hello
     pre {
