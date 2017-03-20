@@ -28,7 +28,7 @@ A first ruleset for the Quickstart
       name = event:attr("name").klog("our passed in name: ")
     }  
     send_directive("say") with
-      something = "Hello World"
+      something = "Hello " + name
   }
   
 }
