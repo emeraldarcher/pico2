@@ -21,9 +21,9 @@ Part 3 of lab
 
     short_trips = function() {
 	allTrips = getTrips();
-        longTrips = getLongTrips()
+        longTrips = getLongTrips();
 
-        
+        allTrips.filter(function(trip){longTrips.index(trip) == -1})
     }
 
     clear_trips = [{}] 
