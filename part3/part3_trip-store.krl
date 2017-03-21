@@ -26,8 +26,8 @@ Part 3 of lab
         allTrips.filter(function(trip){longTrips.index(trip) == -1})
     }
 
-    clear_trips = [{}] 
-    clear_long_trips = [{}]
+    clear_trips = [] 
+    clear_long_trips = []
   
     getTrips = function() {
       ent:trips

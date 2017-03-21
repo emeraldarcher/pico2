@@ -17,7 +17,7 @@ Part 1 of lab
     pre { 
       attrs = event:attrs().klog("Attributes: ")
       timestamp = time:now()
-      mileage = event:attrs("mileage")
+      mileage = event:attr("mileage")
     }
     fired {
       raise explicit event "trip_processed"
@@ -29,7 +29,8 @@ Part 1 of lab
     select when explicit trip_processed
     pre {
       attrs = event:attrs().klog("Attributes: ")
-      mileage = event:attr("mileage").klog("Passed in mileage: ")
+      mileage = event:attr("mileage").klog("Received mileage: ")
+      timestamp = event:attr("timestamp").klog("Received timestamp: ")
     }
     if mileage > long_trip
     then
@@ -43,7 +44,8 @@ Part 1 of lab
   rule found_long_trip {
     select when explicit found_long_trip
     pre {
-      mileage = event:attrs("mileage").klog("Received mileage: ")
+      mileage = event:attr("mileage").klog("Received mileage: ")
+      timestamp = event:attr("timestamp").klog("Received timestamp: ")
     }
     send_directive("trip") with
       long_trip = 1
