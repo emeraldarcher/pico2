@@ -23,7 +23,9 @@ Part 3 of lab
 	allTrips = getTrips();
         longTrips = getLongTrips();
 
-        allTrips.filter(function(trip){longTrips.index(trip) != -1})
+	temp = allTrips.collect(function(trip){(trip{"mileage"} > 1000) => "long" | "short"});
+        shortTrips = temp{"short"};
+	shortTrips
     }
 
     clear_trips = [] 
