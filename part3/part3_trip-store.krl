@@ -23,7 +23,7 @@ Part 3 of lab
 	allTrips = getTrips();
         longTrips = getLongTrips();
 
-        allTrips.filter(function(trip){longTrips.index(trip) == -1})
+        allTrips.filter(function(trip){longTrips.index(trip) != -1})
     }
 
     clear_trips = [] 
