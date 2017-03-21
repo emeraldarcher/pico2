@@ -1,6 +1,6 @@
 ruleset trip_store {
   meta {
-    name "Part 2 - Trip Store"
+    name "Part 3 - Trip Store"
     description <<
 Part 3 of lab
 >>
