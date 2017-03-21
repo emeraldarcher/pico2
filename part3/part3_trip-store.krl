@@ -49,7 +49,7 @@ Part 3 of lab
       mileage = passed_mileage
     always {
       ent:trips := ent:trips.defaultsTo(clear_trips, "initialization was needed");
-      ent:trips := ent:trips.append([{"timestamp": passed_timestamp, "mileage": passed_mileage}])
+      ent:trips := ent:trips.append({"timestamp": passed_timestamp, "mileage": passed_mileage})
     }
   }
 
@@ -64,7 +64,7 @@ Part 3 of lab
       mileage = passed_mileage
     always {
       ent:long_trips := ent:long_trips.defaultsTo(clear_trips, "initialization was needed");
-      ent:long_trips := ent:long_trips.append([{"timestamp": passed_timestamp, "mileage": passed_mileage}])
+      ent:long_trips := ent:long_trips.append({"timestamp": passed_timestamp, "mileage": passed_mileage})
     }
   }
 
