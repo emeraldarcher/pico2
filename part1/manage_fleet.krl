@@ -85,7 +85,8 @@ ruleset manage_fleet {
       event:send(
         { "eci": the_vehicle.eci, "eid": "install-ruleset",
           "domain": "pico", "type": "new_ruleset",
-          "attrs": { "rid": "vehicle_rules", "vehicle_id": vehicle_id }
+          //"attrs": { "rid": "track_trips", "vehicle_id": vehicle_id }
+          "attrs": { "Prototype_rids": "Subscriptions, track_trips, trip_store", "vehicle_id": vehicle_id }          
         }
       )
     fired {
