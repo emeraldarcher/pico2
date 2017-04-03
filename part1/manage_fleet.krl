@@ -6,32 +6,32 @@ ruleset manage_fleet {
     logging on
     use module io.picolabs.pico alias wrangler
     shares vehicles, showChildren, __testing
-    ;provides trips, long_trips, short_trips
-    ;shares trips, long_trips, short_trips
+    // provides trips, long_trips, short_trips
+    // shares trips, long_trips, short_trips
   }
 
   global {
-    ; Get all of the Subscribed Vehicle Picos
+    // Get all of the Subscribed Vehicle Picos
     vehicles = function() {
       ent:vehicles.defaultsTo({})
     }
 
-    ; Get the Children of the Fleet (this) Pico
+    // Get the Children of the Fleet (this) Pico
     showChildren = function() {
       wrangler:children()
     }
 
-    ; Get a Specific Child from the List of Vehicle Picos
+    // Get a Specific Child from the List of Vehicle Picos
     childFromID = function(vehicle_id) {
       ent:vehicles{vehicle_id}
     }
 
-    ; Create a Name From the ID
+    // Create a Name From the ID
     nameFromID = function(vehicle_id) {
       "Vehicle " + vehicle_id + " Pico"
     }
 
-    ; Testing
+    // Testing
     __testing = { "queries": [ { "name": "vehicles" },
                               { "name": "showChildren" } ],
                  "events":  [ { "domain": "vehicles", "type": "empty" },
@@ -43,7 +43,7 @@ ruleset manage_fleet {
                }
   }
 
-  ; Create New Vehicle Pico - Already Exists
+  // Create New Vehicle Pico - Already Exists
   rule vehicle_already_exists {
     select when car new_vehicle
     pre {
@@ -55,7 +55,7 @@ ruleset manage_fleet {
         with vehicle_id = vehicle_id
   }
 
-  ; Create New Vehicle Pico - Doesn't Exist
+  // Create New Vehicle Pico - Doesn't Exist
   rule create_vehicle {
     select when car new_vehicle
     pre {
@@ -73,7 +73,7 @@ ruleset manage_fleet {
     }
   }
 
-  ; Save the New Pico Information
+  // Save the New Pico Information
   rule pico_child_initialized {
     select when pico child_initialized
     pre {
@@ -94,13 +94,13 @@ ruleset manage_fleet {
     }
   }
 
-  ; Subscribe to Child/Parent???
+  // Subscribe to Child/Parent???
   rule create_subscription {
     select when explicit vehicle_created
 
   }
 
-  ; Delete a Vehicle Pico
+  // Delete a Vehicle Pico
   rule delete_vehicle {
     select when car unneeded_vehicle
     pre {
@@ -119,7 +119,7 @@ ruleset manage_fleet {
     }
   }
 
-  ; Remove all Vehicles in the Fleet
+  // Remove all Vehicles in the Fleet
   rule empty_vehicles {
     select when vehicles empty
     always {
