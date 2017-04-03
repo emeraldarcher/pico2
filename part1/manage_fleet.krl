@@ -86,7 +86,7 @@ ruleset manage_fleet {
         { "eci": the_vehicle.eci, "eid": "install-ruleset",
           "domain": "pico", "type": "new_ruleset",
           //"attrs": { "rid": "track_trips", "vehicle_id": vehicle_id }
-          "attrs": { "Prototype_rids": "Subscriptions, track_trips, trip_store", "vehicle_id": vehicle_id }          
+          "attrs": { "Prototype_rids": "Subscriptions;track_trips;trip_store", "vehicle_id": vehicle_id }
         }
       )
     fired {
@@ -108,7 +108,7 @@ ruleset manage_fleet {
       vehicle_id = event:attr("vehicle_id")
       exists = ent:vehicles >< vehicle_id
       eci = meta:eci
-      child_to_delete = childFromID(section_id)
+      child_to_delete = childFromID(vehicle_id)
     }
     if exists then
       send_directive("vehicle_deleted")
