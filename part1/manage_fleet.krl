@@ -83,10 +83,10 @@ ruleset manage_fleet {
     if vehicle_id.klog("found vehicle_id")
     then
       event:send(
-        { "eci": the_vehicle.eci, "eid": "install-rulesets",
+        { "eci": the_vehicle.eci, "eid": "install-ruleset",
           "domain": "pico", "type": "new_ruleset",
-          "attrs": { "rids": "Subscriptions;track_trips;trip_store", "vehicle_id": vehicle_id }
-          //"attrs": { "Prototype_rids": "Subscriptions;track_trips;trip_store", "vehicle_id": vehicle_id }
+          //"attrs": { "rids": "Subscriptions;track_trips;trip_store", "vehicle_id": vehicle_id }
+          "attrs": { "Prototype_rids": "Subscriptions", "vehicle_id": vehicle_id }
         }
       )
     fired {
