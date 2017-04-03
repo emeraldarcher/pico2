@@ -12,20 +12,20 @@ Part 3 of lab
 
   global {
     trips = function(){
-	getTrips()
+	    getTrips()
     }
 
     long_trips = function() {
- 	getLongTrips()
+ 	    getLongTrips()
     }
 
     short_trips = function() {
-	allTrips = getTrips();
-        longTrips = getLongTrips();
+	     allTrips = getTrips();
+       longTrips = getLongTrips();
 
-	temp = allTrips.collect(function(trip){(trip{"mileage"} > 1000) => "long" | "short"});
+	      temp = allTrips.collect(function(trip){(trip{"mileage"} > 1000) => "long" | "short"});
         shortTrips = temp{"short"};
-	shortTrips
+	      shortTrips
     }
 
     clear_trips = []
@@ -76,6 +76,16 @@ Part 3 of lab
       ent:trips := clear_trips;
       ent:long_trips := clear_long_trips
     }
+  }
+
+  rule get_trips {
+    select when car trips
+    pre {
+      trips = getTrips()
+      id = event:attr("vehicl_id")
+    }
+    send_directive(id) with
+      trips = trips
   }
 
 }

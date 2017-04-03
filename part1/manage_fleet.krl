@@ -5,7 +5,7 @@ ruleset manage_fleet {
     author "Kyle Cornelison"
     logging on
     use module io.picolabs.pico alias wrangler
-    shares vehicles, showChildren, __testing
+    shares vehicles, showChildren, __testing, generateReport
     // provides trips, long_trips, short_trips
     // shares trips, long_trips, short_trips
   }
@@ -41,6 +41,11 @@ ruleset manage_fleet {
                                 "attrs": [ "vehicle_id" ] }
                             ]
                }
+
+    // Generate Report
+    generateReport = function() {
+      noop()
+    }
   }
 
   // Create New Vehicle Pico - Already Exists
