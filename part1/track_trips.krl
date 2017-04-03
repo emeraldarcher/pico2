@@ -1,7 +1,9 @@
-ruleset track_trips_2 {
+ruleset track_trips {
   meta {
-    name "Track Trips"
-    description <<Track Trips for Vehicle>>
+    name "Part 2 - Track Trips"
+    description <<
+Part 2 of lab with alterations for part 3
+>>
     author "Kyle Cornelison"
     logging on
   }
