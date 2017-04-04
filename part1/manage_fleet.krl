@@ -48,12 +48,18 @@ ruleset manage_fleet {
     generateReport = function() {
       //skyQuery = function(eci, mod, func, params,_host,_path,_root_url)
 
-      report = vehicles().map(function(vehicle) {
-          Subscriptions:skyQuery(vehicle{eci}, "trip_store", "get_trips", {})
-          }
-        );
+      //report = vehicles().map(function(vehicle) {
+      //    Subscriptions:skyQuery(vehicle{eci}, "trip_store", "get_trips", {})
+      //    }
+      //  );
+      //
+      //report
 
-      report
+      test = vehicles().map(function(vehicle){
+        vehicle{eci}
+      });
+      test
+
       //foreach vehicles() setting (vehicle)
         //Subscriptions:skyQuery(vehicle:eci, "trip_store", "get_trips", {})
     }
