@@ -4,6 +4,7 @@ ruleset manage_fleet {
     description <<Manage Fleet ruleset for part 1 of Pico lab 2>>
     author "Kyle Cornelison"
     logging on
+    use module Subscriptions
     use module io.picolabs.pico alias wrangler
     shares vehicles, showChildren, __testing, generateReport
     // provides trips, long_trips, short_trips
@@ -44,7 +45,16 @@ ruleset manage_fleet {
 
     // Generate Report
     generateReport = function() {
-      noop()
+      //skyQuery = function(eci, mod, func, params,_host,_path,_root_url)
+
+      report = vehicles().map(function(x) {
+          Subscriptions:skyQuery(vehicle:eci, "trip_store", "get_trips", {})
+          }
+        );
+
+      report
+      //foreach vehicles() setting (vehicle)
+        //Subscriptions:skyQuery(vehicle:eci, "trip_store", "get_trips", {})
     }
   }
 
