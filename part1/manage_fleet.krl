@@ -52,10 +52,10 @@ ruleset manage_fleet {
         Subscriptions:skyQuery("" + eci, "trip_store", "trips")
       });
 
-      // Remove empty reports
-      r = r.filter(function(v,k){
-        not (v >< "status")
-      });
+      // Remove empty reports - Not actually needed
+      //r = r.filter(function(v,k){
+      //  not (v >< "status")
+      //});
 
       // Final Report
       report = {};
@@ -66,7 +66,7 @@ ruleset manage_fleet {
       report = report.put({"trips": r});
 
       // Display the report
-      report//.encode()
+      report.encode()
     }
 
   }
