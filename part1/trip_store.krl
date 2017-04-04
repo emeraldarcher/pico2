@@ -32,11 +32,11 @@ Part 3 of lab
     clear_long_trips = []
 
     getTrips = function() {
-      ent:trips
+      ent:trips.defaultsTo({"status": "null"})
     }
 
     getLongTrips = function() {
-      ent:long_trips
+      ent:long_trips.defaultsTo({"status": "null"})
     }
   }
 

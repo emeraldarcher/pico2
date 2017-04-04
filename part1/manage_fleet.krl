@@ -46,23 +46,29 @@ ruleset manage_fleet {
 
     // Generate Report
     generateReport = function() {
-      //skyQuery = function(eci, mod, func, params,_host,_path,_root_url)
-
-      //report = vehicles().map(function(vehicle) {
-      //    Subscriptions:skyQuery(vehicle{eci}, "trip_store", "get_trips", {})
-      //    }
-      //  );
-      //
-      //report
-
-      test = vehicles().map(function(vehicle){
-        vehicle{eci}
+      // Run the report on each vehicle
+      r = vehicles().map(function(v,k){
+        eci = v{["eci"]};
+        Subscriptions:skyQuery("" + eci, "trip_store", "trips")
       });
-      test
 
-      //foreach vehicles() setting (vehicle)
-        //Subscriptions:skyQuery(vehicle:eci, "trip_store", "get_trips", {})
+      // Remove empty reports
+      r = r.filter(function(v,k){
+        not (v >< "status")
+      });
+
+      // Final Report
+      report = {};
+
+      // Put values into the report
+      report = report.put({"vehicles":vehicles().length()});
+      report = report.put({"responded": r.length()});
+      report = report.put({"trips": r});
+
+      // Display the report
+      report//.encode()
     }
+
   }
 
   // Create New Vehicle Pico - Already Exists
