@@ -6,7 +6,7 @@ ruleset manage_fleet {
     logging on
     use module Subscriptions
     use module io.picolabs.pico alias wrangler
-    shares vehicles, showChildren, __testing, generateReport
+    shares vehicles, showChildren, __testing, generateReport, reports
     // provides trips, long_trips, short_trips
     // shares trips, long_trips, short_trips
   }
@@ -15,6 +15,10 @@ ruleset manage_fleet {
     // Get all of the Subscribed Vehicle Picos
     vehicles = function() {
       ent:vehicles.defaultsTo({})
+    }
+
+    reports = function() {
+      ent:reports.defaultsTo({})
     }
 
     // Get the Children of the Fleet (this) Pico
@@ -35,8 +39,13 @@ ruleset manage_fleet {
     // Testing
     __testing = { "queries": [ { "name": "vehicles" },
                               { "name": "showChildren" },
-                              { "name": "generateReport" } ],
+                              { "name": "generateReport" },
+                              { "name": "reports" } ],
                  "events":  [ { "domain": "vehicles", "type": "empty" },
+                              { "domain": "reports", "type": "empty" },
+                              { "domain": "fleet", "type": "create_report",
+                                "attrs": [ "cid" ] },
+                              { "domain": "reports", "type": "recent"},
                               { "domain": "car", "type": "new_vehicle",
                                 "attrs": [ "vehicle_id" ] },
                               { "domain": "car", "type": "unneeded_vehicle",
@@ -69,6 +78,69 @@ ruleset manage_fleet {
       report.encode()
     }
 
+  }
+
+  // Starts the Process of Generating a Report ::: Scatter-Gather
+  rule start_report {
+      select when fleet create_report
+      foreach vehicles() setting (vehicle)
+        pre {
+          f_eci = meta:eci
+          v_eci = vehicle{["eci"]}
+          cid = event:attr("cid")
+        }
+        event:send(
+          { "eci": v_eci, "eid": "get-vehicle-report",
+            "domain": "vehicle", "type": "create_report",
+            "attrs": { //"vehicle_id": id,
+                 "fleet_eci": f_eci,
+                 "cid": cid
+            }
+          }
+        )
+  }
+
+  // Stores a Vehicle Report
+  rule store_report {
+    select when fleet store_report
+    pre {
+      eci = meta:eci
+      cid = event:attr("cid")
+      vid = event:attr("vid")
+      report = event:attr("vehicle_report")
+    }
+    //event:send(
+    //  { "eci": eci, "eid": "check-report",
+    //    "domain": "fleet", "type": "report_stored" }
+    //)
+    always {
+      ent:reports := ent:reports.defaultsTo({}, "reports initialization was needed");
+      ent:reports{"report " + [cid]} := ent:reports{"report " + [cid]}.defaultsTo({}, "report initialization was needed");
+      ent:reports{"report " + [cid]} := ent:reports{"report " + [cid]}.put("vehicle " + [vid], report)
+    }
+  }
+
+  // Checks the Report's status
+  //rule check_report {
+  //  select when fleet report_stored
+  //  pre {
+  //    eci = meta:eci
+  //    vechicle_count = vehicles().length()
+  //    respond_count = ent:fleet_report.length()
+  //  }
+  //  if vehicle_count == respond_count then
+  //    event:send(
+  //      { "eci": eci, "eid": "process-report",
+  //        "domain": "fleet", "type": "report_ready" }
+  //    )
+  //  noop()
+  //}
+
+  // Process the Report and Send it Off
+  rule process_report {
+    select when fleet report_ready
+    send_directive("Fleet Report")
+      with report = ent:reports
   }
 
   // Create New Vehicle Pico - Already Exists
@@ -134,12 +206,6 @@ ruleset manage_fleet {
     }
   }
 
-  // Subscribe to Child/Parent???
-  rule create_subscription {
-    select when explicit vehicle_created
-
-  }
-
   // Delete a Vehicle Pico
   rule delete_vehicle {
     select when car unneeded_vehicle
@@ -165,6 +231,26 @@ ruleset manage_fleet {
     always {
       ent:vehicles := {}
     }
+  }
+
+  // Remove all reports
+  rule empty_reports {
+    select when reports empty
+    always {
+      ent:reports := {}
+    }
+  }
+
+  // Returns the n most recent reports
+  rule get_latest_reports {
+    select when reports recent
+    pre {
+      keys = ent:reports.keys().reverse().slice(5)
+      send = ent:reports.filter(function(v,k){keys >< k})
+      json = send.encode()
+    }
+    send_directive("Recent Reports")
+      with reports = json
   }
 
 }

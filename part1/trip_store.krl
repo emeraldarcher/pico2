@@ -40,6 +40,28 @@ Part 3 of lab
     }
   }
 
+  // Generate a Vehicle Report and Send it to the Fleet
+  rule create_vehicle_report {
+    select when vehicle create_report
+    pre {
+      f_eci = event:attr("fleet_eci")
+      v_eci = meta:eci
+      cid = event:attr("cid")
+      report = getTrips()
+      id = meta:eci
+    }
+    event:send(
+      { "eci": f_eci, "eid": "store-vehicle-report",
+        "domain": "fleet", "type": "store_report",
+        "attrs": { "vid": id,
+             "vehicle_eci": v_eci,
+             "cid": cid,
+             "vehicle_report": report
+        }
+      }
+    )
+  }
+
   rule collect_trips {
     select when explicit trip_processed
     pre {
