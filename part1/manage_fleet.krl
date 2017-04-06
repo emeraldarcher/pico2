@@ -115,8 +115,11 @@ ruleset manage_fleet {
     //)
     always {
       ent:reports := ent:reports.defaultsTo({}, "reports initialization was needed");
-      ent:reports{"report " + [cid]} := ent:reports{"report " + [cid]}.defaultsTo({}, "report initialization was needed");
-      ent:reports{"report " + [cid]} := ent:reports{"report " + [cid]}.put("vehicle " + [vid], report)
+      ent:reports{["report " + cid]} := ent:reports{["report " + cid]}.defaultsTo({}, "report initialization was needed");
+      ent:reports{["report " + cid]} := ent:reports{["report " + cid]}.put(["vehicles"], vehicles().length());
+      ent:reports{["report " + cid, "trips"]} := ent:reports{["report " + cid, "trips"]}.defaultsTo({}, "trips initialization was needed");
+      ent:reports{["report " + cid, "trips"]} := ent:reports{["report " + cid, "trips"]}.put(["vehicle " + vid], report);
+      ent:reports{["report " + cid]} := ent:reports{["report " + cid]}.put(["responded"], ent:reports{["report " + cid, "trips"]}.length())
     }
   }
 
